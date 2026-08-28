@@ -5,22 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Machapa Games: tienda de videojuegos físicos y digitales con títulos destacados, categorías y contacto.">
   <title>Machapa Games | Tienda de videojuegos</title>
-  <link rel="stylesheet" href="Sebastian_Tapia_PFY2201_CSS_Semana2.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Sebastian_Tapia_PFY2201_CSS_Semana3.css">
 </head>
 <body>
 
   <!-- Cabecera del sitio -->
   <header id="inicio">
-    <img src="img/logo.jpg" alt="Logotipo de Machapa Games" width="200" height="150">
-    <h1>Machapa Games</h1>
-    <p>
-      Somos una tienda especializada en videojuegos físicos y digitales.
-      Ofrecemos títulos nuevos, clásicos y ediciones especiales para PC, consolas
-      y dispositivos portátiles, con atención cercana y precios competitivos.
-    </p>
+    <div class="cabecera">
+      <img src="img/logo.jpg" alt="Logotipo de Machapa Games" width="200" height="150">
+      <div class="cabecera-texto">
+        <h1>Machapa Games</h1>
+        <p>
+          Somos una tienda especializada en videojuegos físicos y digitales.
+          Ofrecemos títulos nuevos, clásicos y ediciones especiales para PC, consolas
+          y dispositivos portátiles, con atención cercana y precios competitivos.
+        </p>
+      </div>
+    </div>
   </header>
 
-  <!-- Menú de navegación -->
+  <!-- Menú de navegación (Flexbox) -->
   <nav aria-label="Menú principal">
     <ul class="menu-nav">
       <li><a href="#inicio">Inicio</a></li>
@@ -30,9 +37,9 @@
     </ul>
   </nav>
 
-  <main>
+  <!-- Secciones principales organizadas con CSS Grid -->
+  <main class="layout-principal">
 
-    <!-- Sección principal: productos destacados -->
     <section id="productos" class="seccion">
       <h2>Productos destacados</h2>
       <p>
@@ -40,8 +47,8 @@
         Cada producto incluye una imagen y una breve descripción para ayudarte a elegir.
       </p>
 
-      <ul class="lista-productos">
-        <li class="producto">
+      <div class="grilla-productos">
+        <article class="producto">
           <h3>Split Fiction</h3>
           <img
             src="img/split_fiction.jpg"
@@ -51,15 +58,16 @@
             title="Split Fiction - Acción y aventuras">
           <p>
             Split Fiction es un videojuego de acción y aventuras cooperativo desarrollado
-             por Hazelight Studios y publicado por Electronic Arts el 6 de marzo de 2025.
-             Sigue la historia de Mio y Zoe, dos escritoras de géneros opuestos (ciencia
-             ficción y fantasía) atrapadas en sus propias creaciones por una máquina que
-             roba ideas.
+            por Hazelight Studios y publicado por Electronic Arts el 6 de marzo de 2025.
+            Sigue la historia de Mio y Zoe, dos escritoras de géneros opuestos (ciencia
+            ficción y fantasía) atrapadas en sus propias creaciones por una máquina que
+            roba ideas.
           </p>
+          <p class="precio">$49.990</p>
           <p><a class="boton-contacto" href="#contacto">Consultar disponibilidad</a></p>
-        </li>
+        </article>
 
-        <li class="producto">
+        <article class="producto">
           <h3>Forza Horizon 6</h3>
           <img
             src="img/forza_horizon_6.jpg"
@@ -73,10 +81,11 @@
             zona urbana más grande de la saga en Tokio y un sistema de estaciones que
             transforma radicalmente la jugabilidad.
           </p>
+          <p class="precio">$69.990</p>
           <p><a class="boton-contacto" href="#contacto">Consultar disponibilidad</a></p>
-        </li>
+        </article>
 
-        <li class="producto">
+        <article class="producto">
           <h3>Big Walk</h3>
           <img
             src="img/big_walk.jpg"
@@ -90,19 +99,19 @@
             un mundo abierto con vegetación y resuelven acertijos, comunicándose de diversas
             maneras.
           </p>
+          <p class="precio">$24.990</p>
           <p><a class="boton-contacto" href="#contacto">Consultar disponibilidad</a></p>
-        </li>
-      </ul>
+        </article>
+      </div>
     </section>
 
-    <!-- Categorías de productos -->
     <section id="categorias" class="seccion">
       <h2>Categorías de productos</h2>
       <p>
         Explora nuestras categorías principales. El orden indica las más visitadas
         por nuestros clientes durante el último mes.
       </p>
-      <ol>
+      <ol class="grilla-categorias">
         <li>Acción y aventura</li>
         <li>Deportes y carreras</li>
         <li>Rol (RPG)</li>
@@ -111,39 +120,65 @@
       </ol>
     </section>
 
-    <!-- Contacto -->
     <section id="contacto" class="seccion">
       <h2>Contacto</h2>
       <p>
         ¿Buscas un título específico o una edición de coleccionista?
         Escríbenos y te ayudamos a encontrar el juego ideal.
       </p>
-      <ul>
-        <li>Correo: <a href="mailto:contacto@levelupgames.cl">contacto@levelupgames.cl</a></li>
-        <li>Teléfono: <a href="tel:+56223456789">+56 2 2345 6789</a></li>
-        <li>Horario: lunes a sábado, de 10:00 a 20:00 hrs.</li>
-      </ul>
+
+      <div class="contacto-contenedor">
+        <address class="contacto-datos">
+          <ul>
+            <li>Correo: <a href="mailto:contacto@machapagames.cl">contacto@machapagames.cl</a></li>
+            <li>Teléfono: <a href="tel:+56223456789">+56 2 2345 6789</a></li>
+            <li>Horario: lunes a sábado, de 10:00 a 20:00 hrs.</li>
+          </ul>
+        </address>
+
+        <form class="formulario-contacto" action="#contacto" method="get" onsubmit="enviarConsulta(event)">
+          <h3>Envíanos tu consulta</h3>
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" autocomplete="name" required>
+
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" autocomplete="email" required>
+
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+
+          <button type="submit">Enviar consulta</button>
+        </form>
+      </div>
     </section>
 
   </main>
 
-  <!-- Pie de página -->
+  <!-- Pie de página (Flexbox) -->
   <footer>
     <h2>Machapa Games</h2>
     <p>
       Dirección: Av. Mapache 1234, Santiago, Chile.
     </p>
     <p>Síguenos en redes sociales:</p>
-    <ul>
+    <ul class="redes-footer">
       <li><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
       <li><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
       <li><a href="https://x.com/" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
     </ul>
     <p>
       &copy; 2026 Machapa Games. Todos los derechos reservados.
-      Página optimizada con CSS para la actividad formativa Semana 2 - PFY2201.
+      Página optimizada con HTML, CSS, Flexbox y CSS Grid para la actividad sumativa Semana 3 - PFY2201.
     </p>
   </footer>
 
+  <script>
+    function enviarConsulta(evento) {
+      evento.preventDefault();
+      var nombre = document.getElementById("nombre").value;
+      alert("Gracias, " + nombre + ". Tu consulta fue enviada correctamente. Te contactaremos a la brevedad.");
+      evento.target.reset();
+    }
+  </script>
 </body>
 </html>

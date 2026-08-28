@@ -1,0 +1,628 @@
+/* =========================================================
+   Machapa Games - Semana 3 PFY2201
+   Flexbox (navegación y pie de página)
+   CSS Grid (layout principal, productos, categorías y contacto)
+   Modelo de cajas, selectores avanzados y diseño responsivo
+   ========================================================= */
+
+/* Variables globales de color y tipografía */
+:root {
+  --color-principal: #6c5ce7;
+  --color-secundario: #a29bfe;
+  --color-fondo: #1a1a2e;
+  --color-fondo-claro: #16213e;
+  --color-texto: #eaeaea;
+  --color-texto-suave: #b2bec3;
+  --color-acento: #00cec9;
+  --color-borde: #6c5ce7;
+  --color-precio: #fdcb6e;
+  --fuente-principal: "Nunito", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --fuente-titulo: "Rajdhani", "Trebuchet MS", "Segoe UI", sans-serif;
+  --tamano-base: 16px;
+  --tamano-titulo: 2.75rem;
+  --padding-seccion: 1.5rem;
+  --margen-seccion: 0;
+  --radio: 8px;
+}
+
+/* Modelo de cajas: box-sizing en todos los elementos */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Layout general de la página con CSS Grid */
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "nav"
+    "main"
+    "footer";
+  font-family: var(--fuente-principal);
+  font-size: var(--tamano-base);
+  line-height: 1.6;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+p,
+li,
+a {
+  overflow-wrap: anywhere;
+}
+
+header,
+nav,
+main,
+footer {
+  min-width: 0;
+  max-width: 100%;
+}
+
+header {
+  grid-area: header;
+}
+
+nav {
+  grid-area: nav;
+}
+
+main {
+  grid-area: main;
+}
+
+footer {
+  grid-area: footer;
+}
+
+/* Selector de ID: cabecera del sitio (Flexbox) */
+#inicio {
+  padding: var(--padding-seccion);
+  margin: 0;
+  background-color: var(--color-fondo-claro);
+  border-bottom: 3px solid var(--color-borde);
+}
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.cabecera-texto {
+  max-width: 720px;
+  text-align: center;
+}
+
+#inicio img {
+  border: 2px solid var(--color-acento);
+  border-radius: var(--radio);
+  padding: 0.5rem;
+  margin: 0;
+  background-color: var(--color-fondo);
+}
+
+#inicio p {
+  margin: 0;
+  color: var(--color-texto-suave);
+}
+
+/* Navegación principal con Flexbox */
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-principal);
+  padding: 0.75rem 1rem;
+  margin: 0;
+  border-bottom: 2px solid var(--color-acento);
+}
+
+.menu-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.menu-nav li a {
+  display: inline-block;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Pseudo-clase :hover en enlaces del menú */
+.menu-nav li a:hover,
+.menu-nav li a:focus-visible {
+  background-color: var(--color-acento);
+  color: var(--color-fondo);
+  border-color: #ffffff;
+  outline: none;
+}
+
+/* Selector nth-child: resaltar el segundo ítem del menú */
+.menu-nav li:nth-child(2) a {
+  border-bottom: 2px solid var(--color-acento);
+}
+
+/* Contenedor principal: CSS Grid para las secciones */
+.layout-principal {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "productos"
+    "categorias"
+    "contacto";
+  gap: 1.5rem;
+  max-width: 1100px;
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+#productos {
+  grid-area: productos;
+}
+
+#categorias {
+  grid-area: categorias;
+}
+
+#contacto {
+  grid-area: contacto;
+}
+
+/* Selector de clase: secciones del contenido */
+.seccion {
+  padding: var(--padding-seccion);
+  margin: var(--margen-seccion);
+  min-width: 0;
+  background-color: var(--color-fondo-claro);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--fuente-titulo);
+  letter-spacing: 0.03em;
+}
+
+h1 {
+  font-size: var(--tamano-titulo);
+  font-weight: 700;
+  color: var(--color-acento);
+  margin: 0.25rem 0 0.75rem;
+}
+
+h2 {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--color-secundario);
+  border-bottom: 2px solid var(--color-borde);
+  padding-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 0;
+}
+
+/* Grilla de productos con CSS Grid */
+.grilla-productos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 1rem 0 0;
+  min-width: 0;
+}
+
+.producto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+  padding: 1rem;
+  margin: 0;
+  background-color: rgba(108, 92, 231, 0.15);
+  border: 2px solid var(--color-secundario);
+  border-radius: var(--radio);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.producto:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Selectores nth-child para diferenciar cada producto */
+.producto:nth-child(1) {
+  border-color: var(--color-acento);
+}
+
+.producto:nth-child(2) {
+  border-color: #fd79a8;
+}
+
+.producto:nth-child(3) {
+  border-color: var(--color-precio);
+}
+
+.producto img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border: 1px solid var(--color-texto-suave);
+  border-radius: 4px;
+  padding: 0.25rem;
+  margin: 0.5rem 0;
+  background-color: var(--color-fondo);
+}
+
+.producto p {
+  color: var(--color-texto-suave);
+  margin: 0.75rem 0;
+}
+
+.producto .precio {
+  margin-top: auto;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-precio);
+}
+
+/* Selector de clase: botón de contacto */
+.boton-contacto {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  background-color: var(--color-acento);
+  color: var(--color-fondo);
+  text-decoration: none;
+  border: 2px solid var(--color-acento);
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.boton-contacto:hover,
+.boton-contacto:focus-visible {
+  background-color: transparent;
+  color: var(--color-acento);
+  outline: none;
+}
+
+/* Categorías con CSS Grid */
+.grilla-categorias {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  counter-reset: categoria;
+}
+
+.grilla-categorias li {
+  padding: 1rem 0.75rem;
+  margin: 0;
+  text-align: center;
+  background-color: rgba(0, 206, 201, 0.08);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  font-weight: 600;
+}
+
+.grilla-categorias li::before {
+  counter-increment: categoria;
+  content: counter(categoria) ". ";
+  color: var(--color-acento);
+}
+
+.grilla-categorias li:nth-child(odd) {
+  color: var(--color-acento);
+}
+
+.grilla-categorias li:nth-child(even) {
+  color: var(--color-secundario);
+}
+
+.grilla-categorias li:first-child {
+  font-weight: 700;
+  border-color: var(--color-acento);
+}
+
+.grilla-categorias li:hover {
+  transform: translateY(-4px);
+  background-color: rgba(108, 92, 231, 0.25);
+}
+
+/* Contacto: datos y formulario en CSS Grid */
+.contacto-contenedor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1rem;
+  min-width: 0;
+}
+
+.contacto-datos {
+  font-style: normal;
+}
+
+.contacto-datos ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contacto-datos li {
+  padding: 0.5rem 0;
+  margin: 0.25rem 0;
+  border-bottom: 1px dashed var(--color-texto-suave);
+}
+
+#contacto a {
+  color: var(--color-acento);
+  text-decoration: none;
+}
+
+#contacto a:hover,
+#contacto a:focus-visible {
+  color: var(--color-secundario);
+  text-decoration: underline;
+}
+
+.formulario-contacto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+  max-width: 100%;
+  padding: 1rem;
+  margin: 0;
+  background-color: rgba(108, 92, 231, 0.12);
+  border: 1px solid var(--color-secundario);
+  border-radius: var(--radio);
+}
+
+.formulario-contacto h3 {
+  margin-bottom: 0.25rem;
+}
+
+.formulario-contacto label {
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.formulario-contacto input,
+.formulario-contacto textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  margin: 0;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.formulario-contacto input:focus,
+.formulario-contacto textarea:focus {
+  outline: 2px solid var(--color-acento);
+  border-color: var(--color-acento);
+}
+
+.formulario-contacto button {
+  margin-top: 0.5rem;
+  padding: 0.7rem 1rem;
+  background-color: var(--color-acento);
+  color: var(--color-fondo);
+  border: 2px solid var(--color-acento);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.formulario-contacto button:hover,
+.formulario-contacto button:focus-visible {
+  background-color: transparent;
+  color: var(--color-acento);
+  outline: none;
+}
+
+/* Pie de página con Flexbox */
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--padding-seccion);
+  margin-top: 0;
+  background-color: var(--color-principal);
+  border-top: 3px solid var(--color-acento);
+  text-align: center;
+}
+
+footer h2 {
+  color: #ffffff;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.redes-footer {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+footer a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+footer a:hover,
+footer a:focus-visible {
+  color: var(--color-acento);
+  border-color: var(--color-acento);
+  outline: none;
+}
+
+footer p:last-child {
+  font-size: 0.9rem;
+  color: var(--color-texto-suave);
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   Media queries: escritorio, tablet y móvil
+   ========================================================= */
+
+/* Tablet: hasta 1024px */
+@media (max-width: 1024px) {
+  .grilla-productos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grilla-categorias {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .producto:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 520px;
+    justify-self: center;
+    width: 100%;
+  }
+}
+
+/* Móvil grande: hasta 767px (768px sigue como tablet) */
+@media (max-width: 767px) {
+  .cabecera {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .menu-nav {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .menu-nav li {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .menu-nav li a {
+    display: block;
+    text-align: center;
+  }
+
+  .grilla-productos {
+    grid-template-columns: 1fr;
+  }
+
+  .producto:nth-child(3) {
+    grid-column: auto;
+    max-width: none;
+  }
+
+  .grilla-categorias {
+    grid-template-columns: 1fr;
+  }
+
+  .contacto-contenedor {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 1.85rem;
+  }
+
+  .seccion {
+    padding: 1rem;
+  }
+
+  .layout-principal {
+    padding: 1rem 1.35rem;
+    gap: 1rem;
+  }
+
+  .producto {
+    padding: 0.85rem;
+  }
+}
+
+/* Móvil: hasta 480px */
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+  }
+
+  #inicio img {
+    width: 140px;
+    height: auto;
+  }
+
+  .grilla-categorias {
+    grid-template-columns: 1fr;
+  }
+
+  .producto img {
+    height: 180px;
+  }
+
+  footer {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .redes-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
