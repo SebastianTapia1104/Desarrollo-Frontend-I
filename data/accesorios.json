@@ -1,0 +1,50 @@
+[
+  {
+    "tipo": "Audífonos",
+    "img": "acc_audifonos.jpg",
+    "titulo": "Sony WH-1000XM5",
+    "texto": "Audífonos inalámbricos con cancelación de ruido líder, 30 horas de batería y micrófono para llamadas y partidas.",
+    "precio": "$349.990",
+    "stock": 10
+  },
+  {
+    "tipo": "Teclado",
+    "img": "acc_teclado.jpg",
+    "titulo": "Keychron V1",
+    "texto": "Teclado mecánico 75% con perilla, hot-swap y keycaps PBT. Ideal para jugar y escribir en PC.",
+    "precio": "$119.990",
+    "stock": 10
+  },
+  {
+    "tipo": "Mouse",
+    "img": "acc_mouse.jpg",
+    "titulo": "Logitech G Pro X Superlight 2",
+    "texto": "Mouse inalámbrico de 60 g, sensor HERO 2 y switches LIGHTFORCE para competitivo.",
+    "precio": "$149.990",
+    "stock": 10
+  },
+  {
+    "tipo": "Control",
+    "img": "acc_control.jpg",
+    "titulo": "Sony DualSense",
+    "texto": "Mando oficial de PlayStation 5 con respuesta háptica, gatillos adaptativos y micrófono integrado.",
+    "precio": "$74.990",
+    "stock": 10
+  },
+  {
+    "tipo": "Monitor",
+    "img": "acc_monitor.jpg",
+    "titulo": "Alienware AW2724HF 27\"",
+    "texto": "Monitor gamer IPS de 27 pulgadas, 360 Hz y 0,5 ms. Compatible con NVIDIA G-SYNC.",
+    "precio": "$449.990",
+    "stock": 10
+  },
+  {
+    "tipo": "Silla",
+    "img": "acc_silla.jpg",
+    "titulo": "Cougar Armor One",
+    "texto": "Silla gamer con respaldo alto, apoyabrazos 2D y cuero sintético para sesiones largas.",
+    "precio": "$169.990",
+    "stock": 10
+  }
+]
