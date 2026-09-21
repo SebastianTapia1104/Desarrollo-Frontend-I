@@ -1,10 +1,11 @@
 /**
- * Machapa Games — Semana 5 PFY2201
- * Flujo: iniciarSitio → Fetch JSON (catálogo y accesorios) → pintar DOM
- * → eventos (click, mouseover, submit).
+ * Machapa Games — Semana 6 PFY2201
+ * Flujo: iniciarSitio → Fetch JSON (catálogo async/await y accesorios .then)
+ * → pintar DOM → eventos click, mouseover y submit (búsqueda y contacto).
  */
 (function () {
   var POR_PAGINA = 12;
+  var RUTA_IMG = "assets/img/";
   var CATEGORIAS = {
     accion: "Acción y aventura",
     deportes: "Deportes y carreras",
@@ -15,11 +16,14 @@
 
   var seleccionadas = [];
   var paginaActual = 1;
+  var textoBusqueda = "";
   var productosNodos = [];
   var ordenOriginal = [];
   var carrito = {};
   var stocks = {};
   var nodosStock = {};
+  var modalInstancia = null;
+  var detalleActual = null;
   var URL_PAGO = "https://www.gofundme.com/discover";
 
   /* Crea un nodo HTML y evita repetir document.createElement en cada función. */
@@ -48,7 +52,7 @@
     return parseInt(String(texto).replace(/\D/g, ""), 10) || 0;
   }
 
-  /* Texto de stock para las cards. */
+  /* Texto de stock para las cards y el modal. */
   function textoStock(cantidad) {
     if (cantidad <= 0) return "Sin stock";
     return "Stock: " + cantidad + (cantidad === 1 ? " unidad" : " unidades");
@@ -60,6 +64,12 @@
     if (nodo) {
       nodo.textContent = textoStock(cantidad);
       nodo.classList.toggle("agotado", cantidad <= 0);
+    }
+    if (detalleActual && detalleActual.titulo === titulo) {
+      var modalStock = document.getElementById("modal-stock");
+      modalStock.textContent = textoStock(cantidad);
+      modalStock.classList.toggle("agotado", cantidad <= 0);
+      document.getElementById("modal-agregar").disabled = cantidad <= 0;
     }
   }
 
@@ -136,12 +146,12 @@
     var marco = crearElemento("div", "carousel-frame");
 
     var fondo = crearElemento("img", "carousel-fondo");
-    fondo.src = "img/" + destacado.img;
+    fondo.src = RUTA_IMG + destacado.img;
     fondo.alt = "";
     fondo.setAttribute("aria-hidden", "true");
 
     var foto = crearElemento("img", "carousel-foto");
-    foto.src = "img/" + destacado.img;
+    foto.src = RUTA_IMG + destacado.img;
     foto.alt = "Portada de " + destacado.titulo;
 
     var caption = crearElemento("div", "carousel-caption d-none d-md-block");
@@ -197,10 +207,31 @@
     });
   }
 
-  /* Construye una card de juego con createElement y el botón «Añadir al carrito». */
+  /* Abre el modal Bootstrap con la ficha del producto o accesorio. */
+  function abrirDetalle(item) {
+    detalleActual = item;
+    var disponible = stocks[item.titulo] || 0;
+    document.getElementById("modal-titulo").textContent = item.titulo;
+    document.getElementById("modal-tipo").textContent = item.tipo || CATEGORIAS[item.categoria] || "";
+    document.getElementById("modal-texto").textContent = item.texto;
+    document.getElementById("modal-precio").textContent = item.precio;
+    var foto = document.getElementById("modal-foto");
+    foto.src = RUTA_IMG + item.img;
+    foto.alt = item.titulo;
+    pintarStock(item.titulo, disponible);
+    document.getElementById("modal-agregar").disabled = disponible <= 0;
+    if (!modalInstancia) {
+      modalInstancia = new bootstrap.Modal(document.getElementById("modalProducto"));
+    }
+    modalInstancia.show();
+  }
+
+  /* Construye una card de juego con createElement, detalle y botón de carrito. */
   function crearCardProducto(producto) {
     var col = crearElemento("div", "col-12 col-md-6 col-lg-4 producto-item");
     col.setAttribute("data-categoria", producto.categoria);
+    col.setAttribute("data-nombre", producto.titulo.toLowerCase());
+    col.setAttribute("data-texto", (producto.texto || "").toLowerCase());
     stocks[producto.titulo] = producto.stock || 10;
 
     var article = crearElemento("article", "card card-machapa h-100");
@@ -214,18 +245,21 @@
     body.appendChild(stockNodo);
     body.appendChild(crearElemento("p", "precio mt-auto", producto.precio));
 
-    var consulta = crearElemento("a", "btn btn-acento mt-2", "Consultar disponibilidad");
-    consulta.href = "#contacto";
+    var verDetalle = crearElemento("button", "btn btn-secundario mt-2", "Ver detalle");
+    verDetalle.type = "button";
+    verDetalle.addEventListener("click", function () {
+      abrirDetalle(producto);
+    });
 
-    var alCarrito = crearElemento("button", "btn btn-secundario mt-2", "Añadir al carrito");
+    var alCarrito = crearElemento("button", "btn btn-acento mt-2", "Añadir al carrito");
     alCarrito.type = "button";
     alCarrito.addEventListener("click", function () {
       agregarAlCarrito(producto.titulo, producto.precio, 1);
     });
 
-    body.appendChild(consulta);
+    body.appendChild(verDetalle);
     body.appendChild(alCarrito);
-    article.appendChild(crearMarcoImagen("img/" + producto.img, "Portada de " + producto.titulo));
+    article.appendChild(crearMarcoImagen(RUTA_IMG + producto.img, "Portada de " + producto.titulo));
     article.appendChild(body);
     col.appendChild(article);
     return col;
@@ -251,16 +285,15 @@
     var body = crearElemento("div", "card-body d-flex flex-column");
     body.appendChild(crearElemento("p", "small text-info mb-1", item.tipo));
     body.appendChild(crearElemento("h3", "card-title h5", item.titulo));
+    body.appendChild(crearElemento("p", "card-text", item.texto));
 
-    var detalle = crearElemento("p", "card-text d-none", item.texto);
     var stockNodo = crearElemento("p", "stock", textoStock(stocks[item.titulo]));
     nodosStock[item.titulo] = stockNodo;
 
-    var toggle = crearElemento("button", "btn btn-secundario mt-2", "Ver detalle");
-    toggle.type = "button";
-    toggle.addEventListener("click", function () {
-      var oculto = detalle.classList.toggle("d-none");
-      toggle.textContent = oculto ? "Ver detalle" : "Ocultar detalle";
+    var verDetalle = crearElemento("button", "btn btn-secundario mt-2", "Ver detalle");
+    verDetalle.type = "button";
+    verDetalle.addEventListener("click", function () {
+      abrirDetalle(item);
     });
 
     var alCarrito = crearElemento("button", "btn btn-acento mt-2", "Añadir al carrito");
@@ -269,12 +302,11 @@
       agregarAlCarrito(item.titulo, item.precio, 1);
     });
 
-    body.appendChild(detalle);
     body.appendChild(stockNodo);
     body.appendChild(crearElemento("p", "precio mt-auto", item.precio));
-    body.appendChild(toggle);
+    body.appendChild(verDetalle);
     body.appendChild(alCarrito);
-    article.appendChild(crearMarcoImagen("img/" + item.img, item.titulo));
+    article.appendChild(crearMarcoImagen(RUTA_IMG + item.img, item.titulo));
     article.appendChild(body);
     col.appendChild(article);
     return col;
@@ -381,6 +413,11 @@
       alternarCarrito(false);
     });
     document.getElementById("btn-pagar").addEventListener("click", irAPagar);
+    document.getElementById("modal-agregar").addEventListener("click", function () {
+      if (!detalleActual) return;
+      agregarAlCarrito(detalleActual.titulo, detalleActual.precio, 1);
+      if (modalInstancia) modalInstancia.hide();
+    });
     document.addEventListener("keydown", function (evento) {
       if (evento.key === "Escape") alternarCarrito(false);
     });
@@ -471,11 +508,16 @@
     items.forEach(function (item) { lista.appendChild(item); });
   }
 
-  /* Filtra el catálogo según las categorías activas. */
+  /* Filtra el catálogo según categorías activas y el texto del formulario de búsqueda. */
   function itemsFiltrados() {
     var lista = document.getElementById("lista-productos");
     return Array.prototype.filter.call(lista.children, function (item) {
-      return seleccionadas.length === 0 || seleccionadas.indexOf(item.getAttribute("data-categoria")) !== -1;
+      var categoriaOk = seleccionadas.length === 0 || seleccionadas.indexOf(item.getAttribute("data-categoria")) !== -1;
+      if (!categoriaOk) return false;
+      if (!textoBusqueda) return true;
+      var nombre = item.getAttribute("data-nombre") || "";
+      var texto = item.getAttribute("data-texto") || "";
+      return nombre.indexOf(textoBusqueda) !== -1 || texto.indexOf(textoBusqueda) !== -1;
     });
   }
 
@@ -517,7 +559,7 @@
     infoPagina.textContent = "Mostrando " + desde + "–" + Math.min(paginaActual * POR_PAGINA, total) + " de " + total + " juegos";
   }
 
-  /* Aplica filtros, muestra 12 juegos por página y actualiza la paginación. */
+  /* Aplica búsqueda, filtros, 12 juegos por página y actualiza la paginación. */
   function actualizarCatalogo() {
     var botones = document.querySelectorAll("[data-filtro]");
     var lista = document.getElementById("lista-productos");
@@ -567,6 +609,17 @@
     });
   }
 
+  /* Evento submit: filtra el catálogo con el texto del formulario de búsqueda. */
+  function configurarBusqueda() {
+    document.getElementById("form-busqueda").addEventListener("submit", function (evento) {
+      evento.preventDefault();
+      textoBusqueda = document.getElementById("buscar").value.trim().toLowerCase();
+      paginaActual = 1;
+      actualizarCatalogo();
+      document.getElementById("productos").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   /* Evento mouseover/mouseout: resalta la card al pasar el cursor. */
   function configurarResaltado(contenedorId) {
     var contenedor = document.getElementById(contenedorId);
@@ -584,9 +637,9 @@
 
   /* Cierra el menú hamburguesa al elegir un enlace (móvil). */
   function configurarNavegacion() {
-    document.querySelectorAll(".navbar-nav .nav-link, .navbar-brand").forEach(function (enlace) {
+    document.querySelectorAll(".navbar-nav .nav-link, .navbar-brand, .dropdown-item").forEach(function (enlace) {
       enlace.addEventListener("click", function () {
-        if (enlace.id === "abrir-carrito") return;
+        if (enlace.id === "abrir-carrito" || enlace.classList.contains("dropdown-toggle")) return;
         var menu = document.getElementById("menuPrincipal");
         if (menu && menu.classList.contains("show")) {
           bootstrap.Collapse.getOrCreateInstance(menu).hide();
@@ -595,7 +648,7 @@
     });
   }
 
-  /* Evento submit: valida nombre, correo y mensaje antes de confirmar el envío. */
+  /* Evento submit del contacto: valida nombre, correo y mensaje. */
   function configurarFormulario() {
     var form = document.getElementById("form-contacto");
     var caja = document.getElementById("mensaje-formulario");
@@ -625,37 +678,42 @@
     });
   }
 
-  /* Fetch del JSON local: carga destacados y productos, o muestra el error. */
-  function cargarCatalogo() {
+  /* Fetch del catálogo con async/await (más plano que .then, según la retroalimentación). */
+  async function cargarCatalogo() {
     var estado = document.getElementById("estado-catalogo");
     mostrarMensaje(estado, "Cargando catálogo...", "info");
 
-    return fetch("data/catalogo.json")
-      .then(function (respuesta) {
-        if (!respuesta.ok) throw new Error("No se pudo leer el catálogo (HTTP " + respuesta.status + ")");
-        return respuesta.json();
-      })
-      .then(function (datos) {
-        estado.textContent = "";
-        pintarCarrusel(datos.destacados);
-        pintarFiltros();
-        pintarProductos(datos.productos);
-        configurarFiltros();
-        actualizarCatalogo();
-      })
-      .catch(function (error) {
-        mostrarMensaje(estado, "Error al cargar el catálogo: " + error.message, "error");
-      });
+    try {
+      var respuesta = await fetch("assets/data/catalogo.json");
+      if (!respuesta.ok) throw new Error("No se pudo leer el catálogo (HTTP " + respuesta.status + ")");
+      var datos = await respuesta.json();
+      estado.textContent = "";
+      pintarCarrusel(datos.destacados);
+      pintarFiltros();
+      pintarProductos(datos.productos);
+      configurarFiltros();
+      actualizarCatalogo();
+    } catch (error) {
+      mostrarMensaje(
+        estado,
+        "No pudimos cargar el catálogo de juegos. Revisa tu conexión o recarga la página. Detalle: " + error.message,
+        "error"
+      );
+      var reintentar = crearElemento("button", "btn btn-secundario mt-2", "Reintentar carga");
+      reintentar.type = "button";
+      reintentar.addEventListener("click", function () { cargarCatalogo(); });
+      estado.appendChild(reintentar);
+    }
   }
 
-  /* Fetch del JSON de periféricos: un modelo real por tipo, con stock y precio. */
+  /* Fetch de accesorios con promesas encadenadas (.then), para comparar con async/await. */
   function cargarAccesorios() {
     var estado = document.getElementById("estado-accesorios");
     var lista = document.getElementById("lista-accesorios");
     lista.textContent = "";
     mostrarMensaje(estado, "Cargando accesorios...", "info");
 
-    return fetch("data/accesorios.json")
+    return fetch("assets/data/accesorios.json")
       .then(function (respuesta) {
         if (!respuesta.ok) throw new Error("No se pudo leer accesorios.json (HTTP " + respuesta.status + ")");
         return respuesta.json();
@@ -666,7 +724,11 @@
       })
       .catch(function (error) {
         estado.textContent = "";
-        mostrarMensaje(estado, "No se pudieron cargar los accesorios: " + error.message, "error");
+        mostrarMensaje(
+          estado,
+          "No pudimos cargar los accesorios. Inténtalo de nuevo en unos segundos. Detalle: " + error.message,
+          "error"
+        );
         var reintentar = crearElemento("button", "btn btn-secundario mt-2", "Reintentar carga");
         reintentar.type = "button";
         reintentar.addEventListener("click", cargarAccesorios);
@@ -678,6 +740,7 @@
   function iniciarSitio() {
     configurarNavegacion();
     configurarFormulario();
+    configurarBusqueda();
     configurarCarrito();
     configurarResaltado("lista-productos");
     configurarResaltado("lista-accesorios");

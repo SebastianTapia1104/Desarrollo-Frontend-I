@@ -1,5 +1,5 @@
-/* Machapa Games — Semana 5 PFY2201
-   Marca sobre Bootstrap 5 + estados de interacción DOM */
+/* Machapa Games — Semana 6 PFY2201
+   Marca sobre Bootstrap 5: navbar, cards, modal, carrito y estados de Fetch */
 
 :root {
   --color-principal: #6c5ce7;
@@ -163,14 +163,60 @@ h3,
   border-color: var(--color-acento);
 }
 
-.orden-select {
+.orden-select,
+.campo-oscuro {
   background-color: var(--color-fondo);
   color: var(--color-texto);
   border: 1px solid var(--color-principal);
+}
+
+.orden-select {
   max-width: 280px;
 }
 
-.orden-select:focus {
+.busqueda-grupo {
+  max-width: 520px;
+}
+
+.dropdown-menu-machapa {
+  background-color: var(--color-fondo-claro);
+  border: 1px solid var(--color-principal);
+}
+
+.dropdown-menu-machapa .dropdown-item:hover,
+.dropdown-menu-machapa .dropdown-item:focus {
+  background-color: rgba(0, 206, 201, 0.18);
+  color: var(--color-acento);
+}
+
+.modal-machapa .modal-content {
+  background-color: var(--color-fondo-claro);
+  color: var(--color-texto);
+  border: 1px solid var(--color-principal);
+}
+
+.modal-machapa .modal-header,
+.modal-machapa .modal-footer {
+  border-color: var(--color-principal);
+}
+
+.modal-machapa .modal-title {
+  color: var(--color-acento);
+}
+
+.modal-foto {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  background-color: #0b0b18;
+  border-radius: 8px;
+}
+
+.orden-select:focus,
+.campo-oscuro:focus {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
   border-color: var(--color-acento);
   box-shadow: 0 0 0 0.2rem rgba(0, 206, 201, 0.25);
 }

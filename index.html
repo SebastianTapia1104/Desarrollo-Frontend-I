@@ -9,15 +9,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="Sebastian_Tapia_PFY2201_CSS_Semana5.css">
+  <link rel="stylesheet" href="assets/css/estilos.css">
 </head>
 <body>
 
-  <!-- Navegación: navbar Bootstrap, se colapsa en móvil -->
+  <!-- Navbar Bootstrap 5: se colapsa en móvil y agrupa dos categorías simuladas -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-machapa sticky-top" aria-label="Menú principal">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2 me-auto me-lg-3" href="#inicio">
-        <img src="img/logo.jpg" alt="Logotipo de Machapa Games">
+        <img src="assets/img/logo.jpg" alt="Logotipo de Machapa Games">
         Machapa Games
       </a>
       <div class="collapse navbar-collapse flex-lg-grow-1" id="menuPrincipal">
@@ -25,7 +25,15 @@
           <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="#destacados">Destacados</a></li>
           <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#categorias">Categorías</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#categorias" id="menuCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categorías
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-machapa" aria-labelledby="menuCategorias">
+              <li><a class="dropdown-item" href="#productos">Juegos</a></li>
+              <li><a class="dropdown-item" href="#accesorios">Accesorios</a></li>
+            </ul>
+          </li>
           <li class="nav-item"><a class="nav-link" href="#accesorios">Accesorios</a></li>
           <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
         </ul>
@@ -46,7 +54,7 @@
   <header id="inicio" class="presentacion">
     <div class="container">
       <div class="presentacion-fila">
-        <img src="img/logo.jpg" alt="Logotipo de Machapa Games" width="110" height="110">
+        <img src="assets/img/logo.jpg" alt="Logotipo de Machapa Games" width="110" height="110">
         <div class="presentacion-texto">
           <h1>Machapa Games</h1>
           <p>
@@ -59,7 +67,7 @@
     </div>
   </header>
 
-  <!-- Destacados: carrusel armado con JavaScript (createElement) cada 3 s -->
+  <!-- Destacados: carrusel Bootstrap armado con createElement cada 3 s -->
   <section id="destacados" aria-labelledby="titulo-destacados">
     <div class="container pt-3 pb-1">
       <h2 id="titulo-destacados" class="seccion-titulo-centro mb-2">Juegos destacados</h2>
@@ -80,13 +88,20 @@
 
   <main class="container py-5">
 
-    <!-- Productos: catálogo cargado con Fetch desde data/catalogo.json -->
+    <!-- Productos: lista dinámica con Fetch desde assets/data/catalogo.json -->
     <section id="productos" class="mb-5" aria-labelledby="titulo-productos">
       <h2 id="titulo-productos" class="seccion-titulo mb-3">Productos</h2>
-      <p class="texto-suave mb-4">Filtra por categoría, ordena o añade juegos al carrito.</p>
+      <p class="texto-suave mb-4">Busca un título, filtra por categoría u ordena. Añade juegos al carrito o abre el detalle.</p>
       <div id="estado-catalogo"></div>
 
       <div id="categorias" class="filtros-panel mb-4" aria-labelledby="titulo-categorias">
+        <form id="form-busqueda" class="mb-4" role="search">
+          <label for="buscar" class="h6 text-uppercase mb-2 d-block etiqueta-filtro">Buscar producto</label>
+          <div class="input-group busqueda-grupo">
+            <input class="form-control campo-oscuro" type="search" id="buscar" name="buscar" placeholder="Ej: Elden Ring, cooperativo, carreras..." autocomplete="off">
+            <button class="btn btn-acento" type="submit">Buscar</button>
+          </div>
+        </form>
         <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
           <div>
             <h3 id="titulo-categorias" class="h6 text-uppercase mb-2 etiqueta-filtro">Categoría</h3>
@@ -106,24 +121,24 @@
       </div>
 
       <div class="row g-4" id="lista-productos"></div>
-      <p id="mensaje-vacio" class="texto-suave mt-4 d-none">No hay juegos en las categorías seleccionadas. Elige otra o pulsa «Todos».</p>
+      <p id="mensaje-vacio" class="texto-suave mt-4 d-none">No hay juegos que coincidan con la búsqueda o las categorías. Prueba otro término o pulsa «Todos».</p>
       <nav id="paginacion" class="mt-4" aria-label="Páginas del catálogo">
         <ul class="pagination pagination-machapa justify-content-center mb-1"></ul>
       </nav>
       <p id="info-pagina" class="texto-suave text-center small mb-0"></p>
     </section>
 
-    <!-- Accesorios: datos externos con Fetch API (Fake Store) -->
+    <!-- Accesorios: segundo Fetch a JSON local -->
     <section id="accesorios" class="mb-5" aria-labelledby="titulo-accesorios">
       <h2 id="titulo-accesorios" class="seccion-titulo mb-3">Accesorios y periféricos</h2>
       <p class="texto-suave mb-4">
-        Catálogo de un producto por tipo. Pulsa «Ver detalle» para leer la descripción.
+        Un modelo real por tipo. Pulsa «Ver detalle» para abrir la ficha en un modal.
       </p>
       <div id="estado-accesorios"></div>
       <div class="row g-4" id="lista-accesorios"></div>
     </section>
 
-    <!-- Contacto: formulario validado con el evento submit -->
+    <!-- Contacto: datos de la tienda y formulario -->
     <section id="contacto" class="mb-4" aria-labelledby="titulo-contacto">
       <h2 id="titulo-contacto" class="seccion-titulo mb-3">Contacto</h2>
       <p class="texto-suave mb-4">
@@ -149,15 +164,15 @@
               <h3 class="card-title h5">Envíanos tu consulta</h3>
               <div class="mb-3">
                 <label class="form-label" for="nombre">Nombre</label>
-                <input class="form-control" type="text" id="nombre" name="nombre" autocomplete="name" required>
+                <input class="form-control campo-oscuro" type="text" id="nombre" name="nombre" autocomplete="name" required>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="correo">Correo electrónico</label>
-                <input class="form-control" type="email" id="correo" name="correo" autocomplete="email" required>
+                <input class="form-control campo-oscuro" type="email" id="correo" name="correo" autocomplete="email" required>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="mensaje">Mensaje</label>
-                <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
+                <textarea class="form-control campo-oscuro" id="mensaje" name="mensaje" rows="4" required></textarea>
               </div>
               <button class="btn btn-acento" type="submit">Enviar consulta</button>
               <div id="mensaje-formulario"></div>
@@ -169,10 +184,13 @@
 
   </main>
 
+  <!-- Pie de página: contacto y redes -->
   <footer class="text-white text-center py-4 mt-auto">
     <div class="container">
       <h2 class="h4">Machapa Games</h2>
       <p class="mb-2">Dirección: Av. Mapache 1234, Santiago, Chile.</p>
+      <p class="mb-1">Correo: <a class="link-light" href="mailto:contacto@machapagames.cl">contacto@machapagames.cl</a></p>
+      <p class="mb-2">Teléfono: <a class="link-light" href="tel:+56223456789">+56 2 2345 6789</a></p>
       <p class="mb-2">Síguenos en redes sociales:</p>
       <ul class="list-inline mb-3">
         <li class="list-inline-item"><a class="link-light" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
@@ -181,12 +199,35 @@
       </ul>
       <p class="small mb-0">
         &copy; 2026 Machapa Games. Todos los derechos reservados.
-        Página con manipulación del DOM, eventos y Fetch API para la actividad formativa Semana 5 - PFY2201.
+        Actividad sumativa Semana 6 - PFY2201: Bootstrap 5, DOM, eventos y Fetch API.
       </p>
     </div>
   </footer>
 
-  <!-- Carrito: panel lateral que se expande y se contrae -->
+  <!-- Modal Bootstrap: ficha de producto o accesorio -->
+  <div class="modal fade modal-machapa" id="modalProducto" tabindex="-1" aria-labelledby="modal-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="modal-titulo">Detalle</h2>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <img id="modal-foto" class="modal-foto mb-3" src="" alt="">
+          <p id="modal-tipo" class="small text-info mb-2"></p>
+          <p id="modal-texto" class="texto-suave"></p>
+          <p id="modal-stock" class="stock"></p>
+          <p id="modal-precio" class="precio mb-0"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secundario" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-acento" id="modal-agregar">Añadir al carrito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Carrito: panel lateral con resumen dinámico -->
   <button type="button" id="pestana-carrito" class="pestana-carrito" aria-expanded="false" aria-controls="carrito">
     Carrito <span id="contador-pestana">0</span>
   </button>
@@ -206,6 +247,6 @@
   </aside>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="Sebastian_Tapia_PFY2201_DOM_Semana5.js"></script>
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
