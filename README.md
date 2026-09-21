@@ -1,96 +1,80 @@
-# Machapa Games — PFY2201 Semana 6
+# Machapa Games
 
-Tienda de videojuegos (e-commerce) hecha con **Bootstrap 5.3** y **JavaScript**.
+Sitio de e-commerce para una tienda de videojuegos, desarrollado con **Bootstrap 5.3** y **JavaScript**.
 
-Actividad sumativa: *Optimizando la lógica y rendimiento de una página web con JavaScript*.
+Proyecto del curso **Desarrollo Frontend I (PFY2201)** — actividad sumativa *Optimizando la lógica y rendimiento de una página web con JavaScript*.
 
-- **Alumno:** Sebastián Tapia
-- **Curso:** Desarrollo Frontend I (PFY2201)
-- Repositorio: https://github.com/SebastianTapia1104/Desarrollo-Frontend-I
-- Sitio en GitHub Pages: https://sebastiantapia1104.github.io/Desarrollo-Frontend-I/
+**Autor:** Sebastián Tapia
 
-## Cómo abrir el sitio
+**Sitio publicado:** [sebastiantapia1104.github.io/Desarrollo-Frontend-I](https://sebastiantapia1104.github.io/Desarrollo-Frontend-I/)
 
-No abras `index.html` con doble clic (`file://`). El `fetch` de los JSON no funciona así.
+## Visualización
 
-1. Abre esta carpeta en Cursor o VS Code.
-2. Usa **Live Server**, o en una terminal:
+La versión pública está en **GitHub Pages** (enlace de arriba). El catálogo y los accesorios se cargan con la Fetch API desde archivos JSON, por lo que el sitio requiere un origen HTTP o HTTPS.
 
-```bash
-npx --yes http-server -p 5500 -c-1
-```
+En local se replica el mismo comportamiento con un servidor estático (por ejemplo Live Server en el editor, o `npx http-server -p 5500`). La dirección habitual es `http://localhost:5500`.
 
-3. Entra a `http://localhost:5500`.
+Abrir `index.html` con doble clic usa el protocolo `file://`. En ese modo el navegador bloquea la lectura de `assets/data/` y la página muestra el aviso de error de carga, con la opción de reintentar. Eso no indica un fallo del JSON: es la restricción de seguridad del navegador. El mismo archivo, servido por HTTP, pinta el catálogo con normalidad.
 
-## Estructura del proyecto
+## Estructura
 
 ```
 index.html
 assets/css/estilos.css
 assets/js/app.js
-assets/img/                  portadas, accesorios y logo
-assets/data/catalogo.json    6 destacados + 30 juegos
-assets/data/accesorios.json  6 periféricos
-evidencias/                  capturas de la entrega
-README.md
+assets/img/
+assets/data/catalogo.json      destacados y 30 juegos
+assets/data/accesorios.json    6 periféricos
+evidencias/
 ```
 
-ZIP para AVA: `Sebastian_Tapia_PFY2201_Optimizacion_Semana6.zip`.
+## Contenido del sitio
 
-## Cómo está distribuida la página
-
-| Sección | Qué hace |
+| Sección | Descripción |
 |---|---|
-| **Navbar** | Inicio, Destacados, Productos, Categorías (Juegos y Accesorios), Accesorios, Contacto. En móvil se colapsa. El carrito queda a la derecha, con el número de unidades. |
+| **Navegación** | Barra Bootstrap con Inicio, Destacados, Productos, Categorías (Juegos y Accesorios), Accesorios y Contacto. En pantallas pequeñas el menú se colapsa. El carrito permanece a la derecha, con el recuento de unidades. |
 | **Inicio** | Logo y presentación de la tienda. |
-| **Destacados** | Carrusel Bootstrap con 6 juegos. Las diapositivas se arman con `createElement` cuando llega el JSON. |
-| **Productos** | 30 juegos desde `catalogo.json`: imagen, nombre, precio y stock. Búsqueda, filtros, orden y 12 por página. |
-| **Accesorios** | 6 periféricos desde `accesorios.json`, con el mismo tipo de card, detalle y carrito. |
-| **Contacto** | Datos de la tienda y formulario validado. |
-| **Footer** | Dirección, correo, teléfono e Instagram / Facebook / X. |
-| **Carrito** | Panel lateral. Al añadir un producto se actualizan la lista, el subtotal, el total y el badge. Se puede cambiar cantidad o quitar. |
-| **Modal** | «Ver detalle» abre una ficha Bootstrap (imagen, texto, stock, precio y añadir al carrito). |
+| **Destacados** | Carrusel Bootstrap de seis títulos. Las diapositivas se construyen en el DOM (`createElement`) tras obtener el JSON. |
+| **Productos** | Treinta juegos con imagen, nombre, precio y stock. Incluye búsqueda, filtros por categoría, orden y paginación (12 por página). |
+| **Accesorios** | Seis periféricos (un modelo por tipo), con la misma lógica de ficha y carrito. |
+| **Contacto y pie** | Datos de la tienda, formulario validado, dirección, correo, teléfono y redes. |
+| **Carrito** | Panel lateral. Al añadir un producto se actualizan lista, subtotal, total y badge. Permite cambiar cantidad o quitar líneas. |
+| **Modal** | «Ver detalle» abre una ficha Bootstrap (imagen, descripción, stock, precio y añadir al carrito). |
 
-Marca: fondo `#1a1a2e`, morado `#6c5ce7`, cian `#00cec9`. Precios en pesos chilenos.
+Identidad visual: fondo `#1a1a2e`, morado `#6c5ce7`, cian `#00cec9`. Precios en pesos chilenos.
 
 ## Interactividad y datos
 
-- **click:** añadir al carrito, filtros, ver detalle, abrir/cerrar carrito.
-- **submit:** formulario de búsqueda de productos y formulario de contacto.
-- **mouseover:** resalta las cards.
-- **Fetch del catálogo:** `async/await` (código más plano, según la retroalimentación de Semana 5).
-- **Fetch de accesorios:** promesas encadenadas con `.then()`, para comparar ambas formas.
-- Si un JSON no carga, se muestra un mensaje amigable y el botón **Reintentar carga**.
+- **click:** carrito, filtros, ficha de producto y apertura o cierre del panel.
+- **submit:** búsqueda de productos y envío del formulario de contacto.
+- **mouseover:** resaltado de las cards.
+- **Catálogo:** Fetch con `async/await` hacia `assets/data/catalogo.json`.
+- **Accesorios:** Fetch con promesas encadenadas (`.then()`) hacia `assets/data/accesorios.json`, en paralelo al catálogo, para dejar visibles ambas formas de asincronía.
+- Si un JSON no responde, la interfaz muestra un mensaje de error y el botón **Reintentar carga**.
 
-## Evidencias
+## Pruebas realizadas
 
-Capturas en `evidencias/`, tomadas el 19-09-2026 en Chrome sobre `http://localhost:5500`.
+Las capturas de `evidencias/` se tomaron el 19 de septiembre de 2026 en Chrome, con el sitio servido en `http://localhost:5500`.
 
-Cómo se probaron:
+- Escritorio (1366×860): carga del catálogo y de los accesorios en el DOM.
+- Búsqueda con el término «Elden» (evento `submit`): el listado queda reducido a Elden Ring.
+- «Añadir al carrito» (evento `click`): el panel muestra línea, cantidad y total.
+- «Ver detalle»: modal Bootstrap con la ficha del producto.
+- Vista móvil (390×844): menú hamburguesa desplegado.
+- Navbar: menú de categorías Juegos y Accesorios.
+- Pie de página: dirección, correo, teléfono y redes.
+- Error de Fetch: se forzó un HTTP 404 sobre `catalogo.json`. La página mostró el aviso amigable y el botón de reintento, en lugar de quedar en blanco.
+- Protocolo `file://`: al abrir el HTML sin servidor, el Fetch no obtiene los JSON y aparece el mismo tipo de mensaje de error; con Live Server o GitHub Pages la carga es correcta.
 
-1. Servidor local HTTP (no `file://`), para que `fetch` funcione.
-2. Escritorio 1366×860: se esperó a que catálogo y accesorios pintaran cards en el DOM.
-3. Se envió la búsqueda «Elden» (`submit`).
-4. Se pulsó «Añadir al carrito» (`click`) y se comprobó el resumen (cantidad y total).
-5. Se abrió «Ver detalle» (modal Bootstrap).
-6. Móvil 390×844: menú hamburguesa abierto.
-7. Se simuló un HTTP 404 en `catalogo.json` para ver el mensaje de error.
-
-| Archivo | Qué demuestra |
+| Captura | Contenido |
 |---|---|
-| `evidencias/01-estructura-escritorio.png` | Página completa: navbar, inicio, carrusel, productos, accesorios, contacto y pie. |
-| `evidencias/02-fetch-catalogo-productos.png` | Fetch del JSON: cards con imagen, nombre y precio. |
-| `evidencias/03-busqueda-submit.png` | Búsqueda «Elden»: queda solo Elden Ring. |
-| `evidencias/04-carrito-agregar.png` | Carrito con línea, subtotal y total. |
-| `evidencias/05-modal-detalle.png` | Modal Bootstrap con la ficha del producto. |
-| `evidencias/06-fetch-accesorios.png` | Segundo Fetch: periféricos. |
-| `evidencias/07-footer-contacto.png` | Pie con dirección, correo, teléfono y redes. |
-| `evidencias/08-navbar-categorias.png` | Navbar con Juegos y Accesorios. |
-| `evidencias/09-navbar-movil.png` | Menú hamburguesa en celular. |
-| `evidencias/10-fetch-error-amigable.png` | Error de carga (HTTP 404) y botón Reintentar. |
-
-## Entrega
-
-1. **AVA:** el ZIP de la raíz (HTML, `assets/` y evidencias).
-2. **GitHub:** mismos archivos en `main` y rama `gh-pages` para el sitio público.
-3. En AVA, el enlace del repositorio y el del despliegue.
+| `evidencias/01-estructura-escritorio.png` | Página completa. |
+| `evidencias/02-fetch-catalogo-productos.png` | Productos obtenidos por Fetch. |
+| `evidencias/03-busqueda-submit.png` | Resultado de la búsqueda «Elden». |
+| `evidencias/04-carrito-agregar.png` | Resumen del carrito. |
+| `evidencias/05-modal-detalle.png` | Modal de ficha. |
+| `evidencias/06-fetch-accesorios.png` | Accesorios cargados desde JSON. |
+| `evidencias/07-footer-contacto.png` | Contacto y pie. |
+| `evidencias/08-navbar-categorias.png` | Categorías de la barra. |
+| `evidencias/09-navbar-movil.png` | Navegación en celular. |
+| `evidencias/10-fetch-error-amigable.png` | Mensaje de error de carga y reintento. |
