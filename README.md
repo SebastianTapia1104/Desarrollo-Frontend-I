@@ -19,6 +19,8 @@ npm run dev
 
 La URL local es `http://127.0.0.1:5173`. El catálogo se carga con Fetch desde `public/data/productos.json`, así que hace falta Vite o un servidor HTTP.
 
+En GitHub Pages, `main` debe publicar la carpeta **`docs/`** (el resultado de `npm run build`), no la raíz. La raíz es el código de desarrollo y el navegador no puede ejecutar los `.jsx`.
+
 ## Estructura
 
 ```

@@ -1,0 +1,8 @@
+[
+  { "img": "split_fiction.jpg", "titulo": "Split Fiction", "texto": "Mio y Zoe se pierden en sus propias historias: una de ciencia ficción y otra de fantasía." },
+  { "img": "forza_horizon_6.jpg", "titulo": "Forza Horizon 6", "texto": "El festival Horizon recorre Japón: cientos de autos, ciudades y estaciones que lo cambian todo." },
+  { "img": "baldurs_gate_3.jpg", "titulo": "Baldur's Gate 3", "texto": "Arma tu grupo y decide el destino de Faerûn en un RPG donde cada diálogo cuenta." },
+  { "img": "elden_ring.jpg", "titulo": "Elden Ring", "texto": "Levántate, sinluz: un continente inmenso te espera, y cada caída es parte del viaje." },
+  { "img": "black_myth_wukong.jpg", "titulo": "Black Myth: Wukong", "texto": "El Destinado recorre mitología china: combates exigentes, transformaciones y leyendas vivas." },
+  { "img": "expedition_33.jpg", "titulo": "Clair Obscur: Expedition 33", "texto": "La Pintora borra una vida cada año. Esta expedición es la última oportunidad de detenerla." }
+]
