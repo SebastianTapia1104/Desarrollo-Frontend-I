@@ -1,17 +1,26 @@
 import MarcoImagen from "./MarcoImagen.jsx";
-import { formatearPesos, tieneOferta, etiquetaDe, textoStock } from "../utils/formato.js";
+import { formatearPesos, tieneOferta, etiquetaDe, textoStock, textoBotonCarrito } from "../utils/formato.js";
 
 /**
- * Card reutilizable: imagen completa, precios, stock, detalle y carrito.
+ * Card reutilizable: imagen, precios, stock, detalle y botón de carrito.
+ * El texto y el estilo del botón cambian si el producto ya está en el carrito.
+ * En ese caso el clic solo abre el panel; no suma otra unidad.
  */
-const ProductCard = ({ producto, onAgregar, onDetalle }) => {
+const ProductCard = ({ producto, onAgregar, onDetalle, enCarrito = false, compacto = false }) => {
   const enOferta = tieneOferta(producto);
   const sinStock = producto.stock <= 0;
   const src = `${import.meta.env.BASE_URL}img/${producto.imagen}`;
+  const clasesCard = [
+    "card",
+    "card-machapa",
+    "h-100",
+    enCarrito ? "resaltada" : "",
+    compacto ? "card-lista" : ""
+  ].filter(Boolean).join(" ");
 
   return (
-    <article className="card card-machapa h-100">
-      <div className="position-relative">
+    <article className={clasesCard}>
+      <div className="position-relative card-machapa-media">
         <MarcoImagen src={src} alt={producto.nombre} />
         {enOferta ? <span className="badge-oferta">Oferta</span> : null}
       </div>
@@ -35,11 +44,11 @@ const ProductCard = ({ producto, onAgregar, onDetalle }) => {
         </button>
         <button
           type="button"
-          className="btn btn-acento mt-2"
+          className={`btn mt-2${enCarrito && !sinStock ? " btn-en-carrito" : " btn-acento"}`}
           disabled={sinStock}
           onClick={() => onAgregar(producto)}
         >
-          {sinStock ? "Sin stock" : "Añadir al carrito"}
+          {textoBotonCarrito(producto, enCarrito)}
         </button>
       </div>
     </article>

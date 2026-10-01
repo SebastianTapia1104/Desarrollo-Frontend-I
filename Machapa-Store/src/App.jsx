@@ -7,6 +7,7 @@ import ProductList from "./components/ProductList.jsx";
 import ShoppingCart from "./components/ShoppingCart.jsx";
 import ModalDetalle from "./components/ModalDetalle.jsx";
 import AvisoOfertas from "./components/AvisoOfertas.jsx";
+import FormularioContacto from "./components/FormularioContacto.jsx";
 import Footer from "./components/Footer.jsx";
 import { useCarrito } from "./hooks/useCarrito.js";
 import {
@@ -17,7 +18,7 @@ import {
 } from "./utils/formato.js";
 
 /**
- * App: carga el catálogo, aplica ofertas, filtra y coordina el carrito.
+ * App: estados del catálogo, carrito y vistas; carga JSON con useEffect.
  */
 const App = () => {
   const [productos, setProductos] = useState([]);
@@ -28,9 +29,11 @@ const App = () => {
   const [categorias, setCategorias] = useState([]);
   const [ordenJuegos, setOrdenJuegos] = useState("default");
   const [ordenAccesorios, setOrdenAccesorios] = useState("default");
+  const [vistaCatalogo, setVistaCatalogo] = useState("grilla");
   const [carritoAbierto, setCarritoAbierto] = useState(false);
   const [detalle, setDetalle] = useState(null);
   const [avisoVisible, setAvisoVisible] = useState(true);
+  const [idResaltado, setIdResaltado] = useState(null);
   const carrito = useCarrito();
 
   const cargarProductos = () => {
@@ -60,6 +63,7 @@ const App = () => {
       });
   };
 
+  /* Al montar, Fetch trae el JSON local y actualiza el estado del catálogo. */
   useEffect(() => {
     cargarProductos();
   }, []);
@@ -77,10 +81,22 @@ const App = () => {
 
   const agregarYAbrir = (producto) => {
     if (producto.stock < 1) return;
+    if (carrito.items.some((item) => item.id === producto.id)) {
+      setIdResaltado(producto.id);
+      setCarritoAbierto(true);
+      setDetalle(null);
+      return;
+    }
     carrito.agregar(producto);
     moverStock(producto.id, -1);
+    setIdResaltado(producto.id);
     setCarritoAbierto(true);
     setDetalle(null);
+  };
+
+  const cerrarCarrito = () => {
+    setCarritoAbierto(false);
+    setIdResaltado(null);
   };
 
   const quitarDelCarrito = (id, cantidad) => {
@@ -131,6 +147,11 @@ const App = () => {
     [productos]
   );
 
+  const idsEnCarrito = useMemo(
+    () => new Set(carrito.items.map((item) => item.id)),
+    [carrito.items]
+  );
+
   return (
     <>
       <AvisoOfertas
@@ -163,6 +184,8 @@ const App = () => {
             onToggleCategoria={toggleCategoria}
             orden={ordenJuegos}
             onOrden={setOrdenJuegos}
+            vista={vistaCatalogo}
+            onVista={setVistaCatalogo}
           />
 
           {cargando ? (
@@ -180,6 +203,8 @@ const App = () => {
               onAgregar={agregarYAbrir}
               onDetalle={setDetalle}
               vacioTexto="No hay juegos que coincidan con la búsqueda o las categorías."
+              idsEnCarrito={idsEnCarrito}
+              vista={vistaCatalogo}
             />
           )}
         </section>
@@ -201,6 +226,13 @@ const App = () => {
               <option value="precio-asc">Precio: menor a mayor</option>
               <option value="precio-desc">Precio: mayor a menor</option>
             </select>
+            <button
+              type="button"
+              className="btn btn-secundario mt-3"
+              onClick={() => setVistaCatalogo(vistaCatalogo === "grilla" ? "lista" : "grilla")}
+            >
+              {vistaCatalogo === "grilla" ? "Cambiar a vista lista" : "Cambiar a vista grilla"}
+            </button>
           </div>
           {!cargando && !error ? (
             <ProductList
@@ -208,20 +240,36 @@ const App = () => {
               onAgregar={agregarYAbrir}
               onDetalle={setDetalle}
               vacioTexto="No hay accesorios que coincidan con la búsqueda."
+              idsEnCarrito={idsEnCarrito}
+              vista={vistaCatalogo}
             />
           ) : null}
+        </section>
+
+        <section id="contacto" className="mb-2">
+          <h2 className="seccion-titulo mb-3">Contacto</h2>
+          <p className="texto-suave mb-4">
+            Escribe tu consulta. Nombre, correo, tema y mensaje son obligatorios; el correo debe ser válido.
+          </p>
+          <FormularioContacto />
         </section>
       </main>
 
       <Footer />
-      <ModalDetalle producto={detalle} onCerrar={() => setDetalle(null)} onAgregar={agregarYAbrir} />
+      <ModalDetalle
+        producto={detalle}
+        onCerrar={() => setDetalle(null)}
+        onAgregar={agregarYAbrir}
+        enCarrito={detalle ? idsEnCarrito.has(detalle.id) : false}
+      />
       <ShoppingCart
         abierto={carritoAbierto}
         items={carrito.items}
         totalProductos={carrito.totalProductos}
         totalPrecio={carrito.totalPrecio}
         stocks={stocks}
-        onCerrar={() => setCarritoAbierto(false)}
+        idResaltado={idResaltado}
+        onCerrar={cerrarCarrito}
         onEliminar={quitarDelCarrito}
         onCambiarCantidad={cambiarCantidad}
       />

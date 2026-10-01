@@ -1,7 +1,7 @@
 import { ETIQUETAS } from "../utils/formato.js";
 
 /**
- * Búsqueda, chips de categoría y orden. onChange filtra en vivo.
+ * Búsqueda, chips, orden y botón de vista (el texto cambia entre grilla y lista).
  */
 const PanelFiltros = ({
   busqueda,
@@ -10,7 +10,9 @@ const PanelFiltros = ({
   seleccionadas,
   onToggleCategoria,
   orden,
-  onOrden
+  onOrden,
+  vista,
+  onVista
 }) => {
   const enviar = (evento) => {
     evento.preventDefault();
@@ -79,6 +81,13 @@ const PanelFiltros = ({
             <option value="precio-asc">Precio: menor a mayor</option>
             <option value="precio-desc">Precio: mayor a menor</option>
           </select>
+          <button
+            type="button"
+            className="btn btn-secundario w-100 mt-3"
+            onClick={() => onVista(vista === "grilla" ? "lista" : "grilla")}
+          >
+            {vista === "grilla" ? "Cambiar a vista lista" : "Cambiar a vista grilla"}
+          </button>
         </div>
       </div>
     </div>

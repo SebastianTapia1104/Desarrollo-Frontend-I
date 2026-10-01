@@ -2,7 +2,7 @@
  * Pie de página con datos de contacto y redes.
  */
 const Footer = () => (
-  <footer id="contacto" className="text-white text-center py-4 mt-auto">
+  <footer className="text-white text-center py-4 mt-auto">
     <div className="container">
       <h2 className="h4">Machapa Games</h2>
       <p className="mb-2">Dirección: Av. Mapache 1234, Santiago, Chile.</p>
@@ -25,7 +25,7 @@ const Footer = () => (
         </li>
       </ul>
       <p className="small mb-0">
-        &copy; 2026 Machapa Games. Componentes funcionales en React — PFY2201 Semana 7.
+        &copy; 2026 Machapa Games. Evaluación Final Transversal — PFY2201 Semana 9.
       </p>
     </div>
   </footer>

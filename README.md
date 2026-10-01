@@ -2,7 +2,7 @@
 
 E-commerce de videojuegos en **React** (Vite) con componentes funcionales, `useState`, `useEffect` y renderizado condicional.
 
-Proyecto del curso **Desarrollo Frontend I (PFY2201)** — actividad formativa *Construyendo componentes funcionales en React para un eCommerce interactivo*.
+Proyecto del curso **Desarrollo Frontend I (PFY2201)** — Evaluación Final Transversal (Semana 9).
 
 **Autor:** Sebastián Tapia
 
@@ -18,7 +18,7 @@ npm install
 npm run dev
 ```
 
-La URL local es `http://127.0.0.1:5173`. El catálogo se carga con Fetch desde `public/data/productos.json` y el carrusel desde `public/data/destacados.json`.
+La URL local es `http://127.0.0.1:5173`. El catálogo se carga con Fetch desde `public/data/productos.json` y el carrusel desde `public/data/destacados.json`. `node_modules` no forma parte de la entrega: se regenera con `npm install`.
 
 La carpeta **`docs/`** es el sitio ya compilado para GitHub Pages (`main` → `/docs`). El código que se edita está en **`Machapa-Store/`**. Para actualizar Pages:
 
@@ -27,15 +27,26 @@ cd Machapa-Store
 npm run build
 ```
 
-Ese comando vacía `docs/` y deja ahí el HTML, CSS y JS listos para publicar. `npm run preview` sirve esa misma build en local.
+Ese comando vacía `docs/` y deja `assets/app.js` y `assets/estilos.css` (nombres fijos, sin hash). `npm run preview` sirve esa misma build en local.
+
+Las capturas de la entrega están en **`Evidencias/`**.
 
 ## Estructura
 
-El repositorio tiene tres piezas a la misma altura: el README, el sitio publicado y el proyecto React.
+El repositorio tiene el README, el sitio publicado, las evidencias de la entrega y el proyecto React.
 
 ```
 README.md                         Este archivo
 docs/                             Sitio compilado para GitHub Pages
+  assets/app.js                   JavaScript compilado (sin hash)
+  assets/estilos.css              Estilos compilados (sin hash)
+Evidencias/                       Capturas de la entrega
+  01-catalogo-datos-dinamicos.png Catálogo cargado con Fetch
+  02-carrito-vacio.png            Carrito vacío (renderizado condicional)
+  03-carrito-con-productos.png    Producto agregado, cantidad y total
+  04-boton-en-el-carrito.png      Botón En el carrito
+  05-carrito-despues-de-quitar.png Tras quitar, el carrito vuelve a vacío
+  06-vista-lista.png              Vista en lista
 Machapa-Store/                    Proyecto React (código fuente)
   index.html                      Punto de entrada de Vite
   package.json                    Dependencias y scripts (dev, build, preview)
@@ -55,15 +66,16 @@ Machapa-Store/                    Proyecto React (código fuente)
       Navbar.jsx                  Menú, desplegable Productos y acceso al carrito
       Presentacion.jsx            Bloque de inicio (#inicio)
       CarruselDestacados.jsx      Carrusel automático de portadas
-      PanelFiltros.jsx            Búsqueda, categorías y orden de juegos
-      ProductList.jsx             Grilla reutilizable de cards
-      ProductCard.jsx             Card: imagen, precios, stock, detalle y añadir
+      PanelFiltros.jsx            Búsqueda, categorías, orden y vista grilla/lista
+      ProductList.jsx             Lista reutilizable de cards (grilla o filas)
+      ProductCard.jsx             Card: precios, stock y botón En el carrito
       MarcoImagen.jsx             Imagen completa (contain) sobre fondo difuminado
       ModalDetalle.jsx            Ficha emergente del producto
+      FormularioContacto.jsx      Contacto: validación, envío y confirmación
       ShoppingCart.jsx            Panel lateral del carrito
       CartTotal.jsx               Unidades y total a pagar
       AvisoOfertas.jsx            Cartel de la campaña de la semana
-      Footer.jsx                  Contacto y redes (#contacto)
+      Footer.jsx                  Dirección, correo, teléfono y redes
     hooks/
       useCarrito.js               Agregar, quitar, cantidad y totales
     utils/
@@ -71,6 +83,14 @@ Machapa-Store/                    Proyecto React (código fuente)
 ```
 
 `App.jsx` coordina la carga del JSON, aplica las ofertas de campaña, filtra y ordena las listas, y mantiene el stock alineado con el carrito. Los componentes reciben datos y callbacks por props; no hay clases.
+
+## Por qué se usa `useMemo`
+
+`juegos`, `accesorios`, `stocks` e `idsEnCarrito` se calculan con `useMemo`. Cada vez que cambia un filtro, una búsqueda o el carrito, hay que recorrer el catálogo completo. Sin memoización React volvería a filtrar y ordenar en cada render (abrir el modal, pulsar el menú, escribir una letra), aunque los datos no hayan cambiado.
+
+`useMemo` guarda el último resultado y solo recalcula cuando cambian sus dependencias (`productos`, `busqueda`, `categorias`, el modo de orden o las líneas del carrito).
+
+No haría falta si el catálogo fuera de pocos ítems fijos, si el cálculo no se reutilizara en el mismo render o si el filtrado viviera en el servidor. En este proyecto el JSON se carga una vez y el usuario combina categorías, orden y búsqueda en el cliente, así que el costo de filtrar 36 productos en cada tecla se nota menos, pero la intención (no repetir trabajo) es la que se espera justificar en la EFT.
 
 ## Catálogo y ofertas
 
@@ -102,7 +122,7 @@ La barra queda fija arriba.
 - **Logo / Inicio:** vuelve al bloque de presentación.
 - **Destacados:** baja al carrusel.
 - **Productos:** abre un menú con **Juegos** y **Accesorios** (no salta al catálogo hasta elegir una opción).
-- **Contacto:** baja al pie de página.
+- **Contacto:** baja al formulario (nombre, correo, tema y mensaje).
 - **Ícono del carrito:** abre el panel; el número indica cuántas unidades hay.
 - En móvil, el botón hamburguesa abre y cierra el menú. Clic fuera, Escape o pasar a escritorio también lo cierra.
 
@@ -115,6 +135,7 @@ Las diapositivas salen de `destacados.json`. Avanzan solas cada 3 segundos. Se p
 - **Buscar:** filtra en vivo por nombre o descripción (también afecta accesorios).
 - **Categoría:** chips para Todos o una o más categorías a la vez. Pulsar de nuevo quita el filtro.
 - **Ordenar:** por defecto, nombre A–Z / Z–A, o precio menor–mayor / mayor–menor (usa el precio vigente).
+- **Cambiar a vista lista / grilla:** el botón cambia de texto y alterna el layout del catálogo.
 - Si no hay coincidencias, se muestra un mensaje en lugar de la grilla.
 - Si el JSON no carga, aparece un error con **Reintentar carga**.
 
@@ -125,17 +146,17 @@ En juegos y accesorios cada card permite:
 - Ver la portada completa, la categoría, la descripción y el stock.
 - Distinguir oferta (badge y precio tachado vs. precio de campaña).
 - **Ver detalle:** abre la ficha en un modal.
-- **Añadir al carrito:** suma una unidad, baja el stock, abre el carrito y deshabilita el botón si no queda stock.
+- **Añadir al carrito:** suma una unidad, baja el stock y abre el carrito. El botón pasa a **En el carrito** (otro color y la card queda resaltada). Un segundo clic ya no agrega otra unidad: solo abre el carrito y marca esa línea para encontrarla rápido. Si no hay stock, queda **Sin stock**.
 
 ### Accesorios
 
-Misma grilla de cards, con un selector de orden propio (nombre o precio). No usa los chips de categoría de juegos.
+Misma lista de cards, con un selector de orden propio (nombre o precio) y el mismo botón de vista. No usa los chips de categoría de juegos.
 
 ### Detalle del producto
 
 El modal muestra imagen, categoría, descripción, stock y precios.
 
-- **Añadir al carrito** funciona igual que en la card y cierra el modal.
+- **Añadir al carrito** funciona igual que en la card y cierra el modal. Si el producto ya está en el carrito, el botón **En el carrito** solo abre el panel y resalta esa línea.
 - **Cerrar**, la X o el fondo oscuro cierran sin comprar.
 
 ### Carrito
@@ -148,8 +169,17 @@ Panel lateral. Se cierra con la X o haciendo clic en el fondo.
 - Abajo se ven el total de unidades y el **total a pagar**.
 - Si no hay ítems, se indica que el carrito está vacío.
 
-El stock de la card, del modal y del carrito se mantiene sincronizado: agregar baja unidades; quitar o bajar cantidad las restaura.
+El stock de la card, del modal y del carrito se mantiene sincronizado: agregar baja unidades; quitar o bajar cantidad las restaura. Al abrir el carrito desde **En el carrito**, esa línea parpadea y queda con borde cian para ubicarla en listas largas.
 
 ### Contacto
 
-El pie incluye dirección, correo (`mailto`), teléfono (`tel`) y enlaces a Instagram, Facebook y X.
+La sección **Contacto** tiene un formulario con nombre, mail de contacto, tema y mensaje.
+
+- Al enviar, ningún campo puede quedar vacío. El correo debe tener formato válido y el mensaje al menos 10 caracteres.
+- El nombre y el tema admiten hasta 40 caracteres y el mensaje 500. El correo no tiene tope.
+- En la ventana de confirmación, nombre y tema van en texto simple. El correo se ve en 2 líneas (con scroll solo si no cabe) y el mensaje en 3.
+- Si algo falla, el error aparece bajo el campo y el envío no se completa.
+- Si todo está bien, se abre una ventana con la confirmación y una copia del mensaje (nombre, correo, tema y texto). Los campos del formulario se vacían en ese momento.
+- **Entendido**, la X o el fondo oscuro cierran la ventana.
+
+El pie mantiene dirección, correo (`mailto`), teléfono (`tel`) y enlaces a Instagram, Facebook y X.

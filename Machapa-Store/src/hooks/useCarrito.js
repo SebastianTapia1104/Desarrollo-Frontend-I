@@ -2,7 +2,7 @@ import { useState } from "react";
 import { precioVigente } from "../utils/formato.js";
 
 /**
- * Carrito compartido: agregar, quitar, cambiar cantidad y totales.
+ * Carrito compartido con useState: agregar, quitar, cantidad y totales.
  */
 export const useCarrito = () => {
   const [items, setItems] = useState([]);

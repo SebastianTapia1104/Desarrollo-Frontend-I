@@ -1,10 +1,10 @@
 import MarcoImagen from "./MarcoImagen.jsx";
-import { formatearPesos, precioVigente, tieneOferta, etiquetaDe, textoStock } from "../utils/formato.js";
+import { formatearPesos, precioVigente, tieneOferta, etiquetaDe, textoStock, textoBotonCarrito } from "../utils/formato.js";
 
 /**
- * Modal de ficha: detalle, stock y añadir al carrito.
+ * Modal de ficha: detalle, stock y botón de carrito (mismo estado que la card).
  */
-const ModalDetalle = ({ producto, onCerrar, onAgregar }) => {
+const ModalDetalle = ({ producto, onCerrar, onAgregar, enCarrito = false }) => {
   if (!producto) return null;
 
   const enOferta = tieneOferta(producto);
@@ -38,11 +38,11 @@ const ModalDetalle = ({ producto, onCerrar, onAgregar }) => {
             <button type="button" className="btn btn-secundario" onClick={onCerrar}>Cerrar</button>
             <button
               type="button"
-              className="btn btn-acento"
+              className={`btn${enCarrito && !sinStock ? " btn-en-carrito" : " btn-acento"}`}
               disabled={sinStock}
               onClick={() => onAgregar(producto)}
             >
-              {sinStock ? "Sin stock" : "Añadir al carrito"}
+              {textoBotonCarrito(producto, enCarrito)}
             </button>
           </div>
         </div>

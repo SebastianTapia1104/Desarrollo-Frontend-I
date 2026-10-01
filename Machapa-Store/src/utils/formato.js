@@ -80,3 +80,10 @@ export const textoStock = (cantidad) => {
   if (cantidad <= 0) return "Sin stock";
   return "Stock: " + cantidad + (cantidad === 1 ? " unidad" : " unidades");
 };
+
+/** Texto del botón de compra según stock y si el producto ya está en el carrito. */
+export const textoBotonCarrito = (producto, enCarrito) => {
+  if (producto.stock <= 0) return "Sin stock";
+  if (enCarrito) return "En el carrito";
+  return "Añadir al carrito";
+};

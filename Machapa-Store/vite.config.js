@@ -7,7 +7,19 @@ export default defineConfig({
   base: "./",
   build: {
     outDir: "../docs",
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        entryFileNames: "assets/app.js",
+        chunkFileNames: "assets/[name].js",
+        assetFileNames: (info) => {
+          if (info.name && info.name.endsWith(".css")) {
+            return "assets/estilos.css";
+          }
+          return "assets/[name][extname]";
+        }
+      }
+    }
   },
   server: {
     host: "127.0.0.1",

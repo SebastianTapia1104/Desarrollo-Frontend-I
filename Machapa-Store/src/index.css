@@ -1,4 +1,4 @@
-/* Machapa Games — Semana 7 PFY2201
+/* Machapa Games — Semana 9 PFY2201
    Marca sobre Bootstrap 5 + componentes React */
 
 :root {
@@ -273,6 +273,72 @@ h3,
   box-shadow: 0 0 0 0.2rem rgba(0, 206, 201, 0.25);
 }
 
+.campo-oscuro.is-invalid {
+  border-color: #ff7675;
+}
+
+.formulario-contacto {
+  background-color: var(--color-fondo-claro);
+  border: 1px solid var(--color-principal);
+  border-radius: 12px;
+  padding: 1.25rem 1.35rem 1.4rem;
+}
+
+.formulario-contacto textarea.campo-oscuro {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.vista-mensaje {
+  margin: 0;
+}
+
+.vista-mensaje > div {
+  margin-bottom: 0.85rem;
+}
+
+.vista-mensaje dt {
+  color: var(--color-acento);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.vista-mensaje dd {
+  margin: 0;
+  color: var(--color-texto);
+}
+
+.vista-mensaje-cuerpo {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.45;
+  max-height: calc(1.45em * 3 + 1.5rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-principal);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+}
+
+.vista-mensaje-cuerpo.lineas-2 {
+  max-height: calc(1.45em * 2 + 1.5rem);
+  overflow-y: hidden;
+}
+
+.vista-mensaje-cuerpo.lineas-2.con-scroll {
+  overflow-y: auto;
+}
+
+.texto-contador {
+  color: var(--color-texto-suave);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
 .pagination-machapa .page-link {
   background-color: var(--color-fondo-claro);
   border-color: var(--color-principal);
@@ -349,6 +415,38 @@ h3,
   color: var(--color-texto);
   border: 1px solid var(--color-principal);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card-machapa.card-lista {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.card-machapa.card-lista .card-machapa-media {
+  width: 220px;
+  min-width: 220px;
+}
+
+.card-machapa.card-lista .card-frame {
+  height: 100%;
+  min-height: 200px;
+}
+
+.card-machapa.card-lista .card-body {
+  min-width: 0;
+}
+
+.btn-en-carrito {
+  background-color: transparent;
+  color: var(--color-precio);
+  border: 2px solid var(--color-precio);
+  font-weight: 700;
+}
+
+.btn-en-carrito:hover,
+.btn-en-carrito:focus {
+  background-color: var(--color-precio);
+  color: var(--color-fondo);
 }
 
 .card-machapa.resaltada {
@@ -513,6 +611,22 @@ h3,
 .btn-secundario:focus {
   background-color: var(--color-acento);
   color: var(--color-fondo);
+}
+
+@media (max-width: 767.98px) {
+  .card-machapa.card-lista {
+    flex-direction: column;
+  }
+
+  .card-machapa.card-lista .card-machapa-media {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .card-machapa.card-lista .card-frame {
+    height: 240px;
+    min-height: 0;
+  }
 }
 
 .navbar-machapa .navbar-toggler {
@@ -694,6 +808,22 @@ body.carrito-abierto {
 .item-carrito-info {
   flex: 1 1 140px;
   min-width: 0;
+}
+
+.item-carrito.resaltado-carrito {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 2px rgba(0, 206, 201, 0.4), 0 8px 20px rgba(0, 206, 201, 0.28);
+  animation: pulso-carrito 0.9s ease-in-out 2;
+}
+
+@keyframes pulso-carrito {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
 }
 
 .mensaje-ui {
